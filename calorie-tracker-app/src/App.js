@@ -1,19 +1,18 @@
-import Loader from "./Loader";
-import { useState, useEffect } from "react";
+import { useReducer } from "react";
+import spinnerReducer from "./Reducers/SpinnerReducer";
+import Loader from "./Components/Loader";
 
-function App() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 3000); // Hides loader after 3 seconds
-  }, []);
+const App = () => {
+  const [state, dispatch] = useReducer(spinnerReducer, { loading: false });
 
   return (
     <div>
-      {loading ? <Loader loading={loading} /> : <h1>Welcome to My App</h1>}
-      <button onClick={() => setLoading(!loading)}>Toggle Loader</button>
+      {state.loading ? <Loader loading={state.loading} /> : <h1>Welcome!</h1>}
+      <button onClick={() => dispatch({ type: "START_LOADING" })}>Start Loading</button>
+      <button onClick={() => dispatch({ type: "STOP_LOADING" })}>Stop Loading</button>
     </div>
   );
-}
+};
 
 export default App;
+
